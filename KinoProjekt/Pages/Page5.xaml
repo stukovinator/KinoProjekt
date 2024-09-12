@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:KinoProjekt.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800" Background="White"
-      Title="Page1">
+      Title="Page5">
     <Grid>
         <Label Content="STRONA 5" FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <Label Content="Wersja programu 0.1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0, 70, 0, 0"/>

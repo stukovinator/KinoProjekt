@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,30 @@ namespace KinoProjekt.Pages
     /// </summary>
     public partial class Page3 : Page
     {
+        public BitmapImage bi;
         public Page3()
         {
             InitializeComponent();
+        }
+
+        private void wybierzOkladke_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Title = "Wybierz plakat";
+            openFileDialog.Filter = "Wspierane grafiki |*.jpg;*.jpeg;*.png|" +
+              "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
+              "Portable Network Graphic (*.png)|*.png";
+            if(openFileDialog.ShowDialog() == true)
+            {
+                bi =  new BitmapImage(new Uri(openFileDialog.FileName, UriKind.RelativeOrAbsolute));
+            }
+        }
+
+        private void dodajFilm_Click(object sender, RoutedEventArgs e)
+        {
+            plakat.Source = bi;
+            tekst.Content = tytul.Text;
+            tytul.Text = string.Empty;
         }
     }
 }

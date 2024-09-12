@@ -20,9 +20,47 @@ namespace KinoProjekt.Pages
     /// </summary>
     public partial class Page2 : Page
     {
+        public List<Film> films = new List<Film>();
         public Page2()
         {
             InitializeComponent();
+            films.Add(new Film(new BitmapImage(new Uri("../plakat.jpg", UriKind.RelativeOrAbsolute)), "Jaws"));
+
+            Image image = new Image
+            {
+                Source = films[0].poster
+            };
+            Label label = new Label
+            {
+                Content = films[0].title
+            };
+            StackPanel stackPanel = new StackPanel
+            {
+                Orientation = Orientation.Horizontal
+            };
+
+            stackPanel.Children.Add(image);
+            stackPanel.Children.Add(label);
+
+            filmy.Children.Add(stackPanel);
+        }
+    }
+
+    public class Film
+    {
+        public BitmapImage poster;
+        public string title;
+
+        public Film()
+        {
+            poster = null;
+            title = null;
+        }
+
+        public Film(BitmapImage poster, string title)
+        {
+            this.poster = poster;
+            this.title = title;
         }
     }
 }

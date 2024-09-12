@@ -27,9 +27,9 @@ namespace KinoProjekt
 
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Window1 window1 = new Window1();
+            LoginWindow loginWindow = new LoginWindow();
             this.Visibility = Visibility.Hidden;
-            window1.Show();
+            loginWindow.Show();
         }
     }
 }

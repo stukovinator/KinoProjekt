@@ -6,8 +6,15 @@
       xmlns:local="clr-namespace:KinoProjekt.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800" Background="White"
-      Title="Page1">
+      Title="Page4">
     <Grid>
-        <Label Content="STRONA 4" FontSize="50" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <ListView x:Name="upcomingMoviesList" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Red">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Tytuł" DisplayMemberBinding="{Binding Tytul}" Width="150"/>
+                    <GridViewColumn Header="Data premiery" DisplayMemberBinding="{Binding DataPremiery}" Width="150"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Page>
