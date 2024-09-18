@@ -20,47 +20,111 @@ namespace KinoProjekt.Pages
     /// </summary>
     public partial class Page2 : Page
     {
-        public List<Film> films = new List<Film>();
+        //public List<Film> films = new List<Film>();
         public Page2()
         {
             InitializeComponent();
-            films.Add(new Film(new BitmapImage(new Uri("../plakat.jpg", UriKind.RelativeOrAbsolute)), "Jaws"));
+            generateSeats();
+            //films.Add(new Film(new BitmapImage(new Uri("../plakat.jpg", UriKind.RelativeOrAbsolute)), "Jaws"));
 
-            Image image = new Image
-            {
-                Source = films[0].poster
-            };
-            Label label = new Label
-            {
-                Content = films[0].title
-            };
-            StackPanel stackPanel = new StackPanel
-            {
-                Orientation = Orientation.Horizontal
-            };
+            //Image image = new Image
+            //{
+            //    Source = films[0].poster
+            //};
+            //Label label = new Label
+            //{
+            //    Content = films[0].title
+            //};
+            //StackPanel stackPanel = new StackPanel
+            //{
+            //    Orientation = Orientation.Horizontal
+            //};
 
-            stackPanel.Children.Add(image);
-            stackPanel.Children.Add(label);
+            //stackPanel.Children.Add(image);
+            //stackPanel.Children.Add(label);
 
-            filmy.Children.Add(stackPanel);
+            //filmy.Children.Add(stackPanel);
+        }
+
+        public void generateSeats()
+        {
+            var bc = new BrushConverter();
+            var index = 1;
+
+            for(int i = 0; i<5; i++)
+            {
+                StackPanel sp = new StackPanel()
+                {
+                    Orientation = Orientation.Horizontal,
+                    HorizontalAlignment = HorizontalAlignment.Center
+                };
+
+                if (i % 2 != 0)
+                {
+                    for (int j = 0; j < 20; j++)
+                    {
+                        Border border = new Border()
+                        {
+                            BorderBrush = (Brush)bc.ConvertFrom("#0466C8"),
+                            BorderThickness = new Thickness(3),
+                            Height = 60,
+                            Width = 65,
+                            CornerRadius = new CornerRadius(2, 2, 15, 15),
+                            Margin = new Thickness(5),
+                            HorizontalAlignment = HorizontalAlignment.Center
+                        };
+
+                        Label label = new Label()
+                        {
+                            Content = index,
+                            HorizontalAlignment = HorizontalAlignment.Center,
+                            VerticalAlignment = VerticalAlignment.Center,
+                            FontFamily = new FontFamily("/Fonts/#Montserrat Bold"),
+                            FontSize = 18
+                        };
+
+                        border.Child = label;
+                        sp.Children.Add(border);
+                        index++;
+                    }
+                    main.Children.Add(sp);
+                }
+                else
+                {
+                    for (int j = 0; j < 19; j++)
+                    {
+                        Border border = new Border()
+                        {
+                            BorderBrush = (Brush)bc.ConvertFrom("#0466C8"),
+                            BorderThickness = new Thickness(3),
+                            Height = 60,
+                            Width = 65,
+                            CornerRadius = new CornerRadius(2, 2, 15, 15),
+                            Margin = new Thickness(5),
+                            HorizontalAlignment = HorizontalAlignment.Center
+
+                        };
+
+                        Label label = new Label()
+                        {
+                            Content = index,
+                            HorizontalAlignment = HorizontalAlignment.Center,
+                            VerticalAlignment = VerticalAlignment.Center,
+                            FontFamily = new FontFamily("/Fonts/#Montserrat Bold"),
+                            FontSize = 18
+                        };
+
+                        border.Child = label;
+                        sp.Children.Add(border);
+                        index++;
+                    }
+                    main.Children.Add(sp);
+                }
+
+                
+            }
         }
     }
 
-    public class Film
-    {
-        public BitmapImage poster;
-        public string title;
-
-        public Film()
-        {
-            poster = null;
-            title = null;
-        }
-
-        public Film(BitmapImage poster, string title)
-        {
-            this.poster = poster;
-            this.title = title;
-        }
-    }
+    
 }

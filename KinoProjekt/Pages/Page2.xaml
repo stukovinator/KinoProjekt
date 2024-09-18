@@ -5,12 +5,25 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:KinoProjekt.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="800" d:DesignWidth="1600"
       Title="Page2" Background="White">
 
     <Grid>
-        <StackPanel x:Name="filmy">
+        <StackPanel>
+            <Border HorizontalAlignment="Stretch" Margin="300, 20, 300, 0" Height="400" BorderBrush="#FF97999C" BorderThickness="2.5" CornerRadius="5">
+                <Label Content="EKRAN FILMOWY" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="32" FontFamily="/Fonts/#Montserrat Bold"/>
+            </Border>
+        </StackPanel>
 
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0, 450, 0, 0" x:Name="main">
+            <StackPanel Orientation="Horizontal" Visibility="Hidden">
+                <Border BorderBrush="#0466C8" BorderThickness="3" Height="60" Width="65" CornerRadius="2, 2, 15, 15" Margin="5" Visibility="Hidden">
+                    <Label Content="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="/Fonts/#Montserrat Bold" FontSize="18"/>
+                </Border>
+                <Border BorderBrush="#0466C8" BorderThickness="3" Height="60" Width="65" CornerRadius="2, 2, 15, 15" Visibility="Hidden">
+                    <Label Content="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="/Fonts/#Montserrat Bold" FontSize="18"/>
+                </Border>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Page>

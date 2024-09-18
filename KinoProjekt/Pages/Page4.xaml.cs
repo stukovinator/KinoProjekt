@@ -12,8 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Data.SQLite;
 using System.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace KinoProjekt.Pages
 {
@@ -24,13 +24,32 @@ namespace KinoProjekt.Pages
 
     public class UpcomingMovie
     {
+        public int Id { get; set; }
         public string Tytul { get; set; }
         public string DataPremiery { get; set; }
     }
 
+    public class SqliteDbContext : DbContext
+    {
+        public DbSet<UpcomingMovie> UpcomingMovies { get; set; }
+
+        public string DbPath { get; }
+
+        public SqliteDbContext()
+        {
+            var folder = AppDomain.CurrentDomain.BaseDirectory;
+            DbPath = System.IO.Path.Combine(folder, "KinoProjekt.db");
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+            => optionsBuilder.UseSqlite($"Data Source={DbPath}");
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+            => modelBuilder.Entity<UpcomingMovie>().ToTable("Nadchodzace_filmy");
+    }
+
     public partial class Page4 : Page
     {
-        private string dbPath = "DataSource=C:/Users/denic/source/repos/KinoProjekt/KinoProjekt/KinoProjekt.db;Version=3;";
         public Page4()
         {
             InitializeComponent();
@@ -39,23 +58,13 @@ namespace KinoProjekt.Pages
 
         public void readFilmsFromDb()
         {
-            List<UpcomingMovie> upcomingList = new List<UpcomingMovie>();
-
-            using(SQLiteConnection conn = new SQLiteConnection(dbPath))
+            using (var db = new SqliteDbContext())
             {
                 try
                 {
-                    conn.Open();
-                    string query = "SELECT Tytul, DataPremiery FROM Nadchodzace_filmy;";
-                    SQLiteCommand cmd = new SQLiteCommand(query, conn);
-                    SQLiteDataReader reader = cmd.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        upcomingList.Add(new UpcomingMovie { Tytul = reader["Tytul"].ToString(), DataPremiery = reader["DataPremiery"].ToString() });
-                    }
-                    
+                    var upcomingList = db.UpcomingMovies.ToList();
                     upcomingMoviesList.ItemsSource = upcomingList;
+
                 }
                 catch(Exception ex)
                 {

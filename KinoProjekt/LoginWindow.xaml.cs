@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,31 +25,47 @@ namespace KinoProjekt
             InitializeComponent();
         }
 
+        private void ShowError(string message)
+        {
+            loginWerrorText.Content = message;
+            loginWerror.Visibility = Visibility.Visible;
+        }
+
+        private bool ValidateInput()
+        {
+            if (string.IsNullOrWhiteSpace(loginWLogin.Text))
+            {
+                ShowError("LOGIN JEST PUSTY");
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(loginWPassword.Text))
+            {
+                ShowError("HASŁO JEST PUSTE");
+                return false;
+            }
+
+            return true;
+        }
+
         private void loginWLoginButton_Click(object sender, MouseButtonEventArgs e)
         {
-            if(loginWLogin.Text.Length == 0)
+            if (!ValidateInput())
             {
-                loginWerrorText.Content = "LOGIN JEST PUSTY";
-                loginWerror.Visibility = Visibility.Visible;
+                return;
             }
-            else
-            {
-                if(loginWPassword.Text.Length == 0)
-                {
-                    loginWerrorText.Content = "HASŁO JEST PUSTE";
-                    loginWerror.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    string login = loginWLogin.Text;
-                    string password = loginWPassword.Text;
-                    using (SQLiteConnection conn = new SQLiteConnection(dbPath))
-                    {
-                        conn.Open();
-                        string query = "SELECT ";
-                    }
-                }
-            }
+
+            Window1 window1 = new Window1();
+            this.Visibility = Visibility.Hidden;
+            window1.Show();
+        }
+
+        private void loginWBack_Click(object sender, MouseButtonEventArgs e)
+        {
+            MainWindow mainWindow = new MainWindow();
+            this.Visibility = Visibility.Hidden;
+            mainWindow.Show();
+            this.Close();
         }
     }
 }

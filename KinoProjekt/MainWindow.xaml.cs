@@ -25,11 +25,23 @@ namespace KinoProjekt
             InitializeComponent();
         }
 
-        private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void mainWLogin_Click(object sender, MouseButtonEventArgs e)
         {
             LoginWindow loginWindow = new LoginWindow();
             this.Visibility = Visibility.Hidden;
             loginWindow.Show();
+        }
+
+        private void mainWRegister_Click(object sender, MouseButtonEventArgs e)
+        {
+            RegisterWindow registerWindow = new RegisterWindow();
+            this.Visibility = Visibility.Hidden;
+            registerWindow.Show();
+        }
+
+        private void mainWBack_Click(object sender, MouseButtonEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }
