@@ -167,6 +167,32 @@
     <Compile Include="LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
+    <Compile Include="obj\Debug\App.g.cs" />
+    <Compile Include="obj\Debug\App.g.i.cs" />
+    <Compile Include="obj\Debug\GeneratedInternalTypeHelper.g.cs" />
+    <Compile Include="obj\Debug\GeneratedInternalTypeHelper.g.i.cs" />
+    <Compile Include="obj\Debug\KinoProjekt_Content.g.cs" />
+    <Compile Include="obj\Debug\KinoProjekt_Content.g.i.cs" />
+    <Compile Include="obj\Debug\LoginWindow.g.cs" />
+    <Compile Include="obj\Debug\LoginWindow.g.i.cs" />
+    <Compile Include="obj\Debug\MainWindow.g.cs" />
+    <Compile Include="obj\Debug\MainWindow.g.i.cs" />
+    <Compile Include="obj\Debug\Pages\LoginPage.g.i.cs" />
+    <Compile Include="obj\Debug\Pages\Page1.g.cs" />
+    <Compile Include="obj\Debug\Pages\Page1.g.i.cs" />
+    <Compile Include="obj\Debug\Pages\Page2.g.cs" />
+    <Compile Include="obj\Debug\Pages\Page2.g.i.cs" />
+    <Compile Include="obj\Debug\Pages\Page3.g.cs" />
+    <Compile Include="obj\Debug\Pages\Page3.g.i.cs" />
+    <Compile Include="obj\Debug\Pages\Page4.g.cs" />
+    <Compile Include="obj\Debug\Pages\Page4.g.i.cs" />
+    <Compile Include="obj\Debug\Pages\Page5.g.cs" />
+    <Compile Include="obj\Debug\Pages\Page5.g.i.cs" />
+    <Compile Include="obj\Debug\RegisterWindow.g.cs" />
+    <Compile Include="obj\Debug\RegisterWindow.g.i.cs" />
+    <Compile Include="obj\Debug\Window1.g.cs" />
+    <Compile Include="obj\Debug\Window1.g.i.cs" />
     <Compile Include="RegisterWindow.xaml.cs">
       <DependentUpon>RegisterWindow.xaml</DependentUpon>
     </Compile>
@@ -253,6 +279,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="obj\Debug\KinoProjekt.g.resources" />
+    <EmbeddedResource Include="obj\Debug\KinoProjekt.Properties.Resources.resources" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -266,6 +294,27 @@
     <Resource Include="Fonts\Montserrat-Regular.ttf" />
     <Resource Include="Fonts\Montserrat-SemiBold.ttf" />
     <Resource Include="Fonts\Montserrat-Thin.ttf" />
+    <None Include="bin\Debug\KinoProjekt.db" />
+    <None Include="bin\Debug\KinoProjekt.exe.config" />
+    <None Include="obj\Debug\DesignTimeResolveAssemblyReferences.cache" />
+    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <None Include="obj\Debug\KinoProj.C267EAF8.Up2Date" />
+    <None Include="obj\Debug\KinoProjekt.csproj.AssemblyReference.cache" />
+    <None Include="obj\Debug\KinoProjekt.csproj.CoreCompileInputs.cache" />
+    <None Include="obj\Debug\KinoProjekt.csproj.GenerateResource.cache" />
+    <None Include="obj\Debug\KinoProjekt_MarkupCompile.cache" />
+    <None Include="obj\Debug\KinoProjekt_MarkupCompile.i.cache" />
+    <None Include="obj\Debug\KinoProjekt_MarkupCompile.lref" />
+    <None Include="obj\Debug\LoginWindow.baml" />
+    <None Include="obj\Debug\MainWindow.baml" />
+    <None Include="obj\Debug\Pages\Page1.baml" />
+    <None Include="obj\Debug\Pages\Page2.baml" />
+    <None Include="obj\Debug\Pages\Page3.baml" />
+    <None Include="obj\Debug\Pages\Page4.baml" />
+    <None Include="obj\Debug\Pages\Page5.baml" />
+    <None Include="obj\Debug\RegisterWindow.baml" />
+    <None Include="obj\Debug\Themes\Generic.baml" />
+    <None Include="obj\Debug\Window1.baml" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -280,6 +329,83 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="plakat.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\KinoProjekt.exe" />
+    <Content Include="bin\Debug\KinoProjekt.pdb" />
+    <Content Include="bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll" />
+    <Resource Include="obj\Debug\KinoProjekt.csproj.FileListAbsolute.txt" />
+    <Content Include="obj\Debug\KinoProjekt.exe" />
+    <Content Include="obj\Debug\KinoProjekt.pdb" />
+    <Content Include="obj\Debug\TempPE\Properties.Resources.Designer.cs.dll" />
+    <Resource Include="bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml" />
+    <Content Include="bin\Debug\Microsoft.Bcl.HashCode.dll" />
+    <Resource Include="bin\Debug\Microsoft.Bcl.HashCode.xml" />
+    <Content Include="bin\Debug\Microsoft.Data.Sqlite.dll" />
+    <Resource Include="bin\Debug\Microsoft.Data.Sqlite.xml" />
+    <Content Include="bin\Debug\Microsoft.DotNet.PlatformAbstractions.dll" />
+    <Resource Include="bin\Debug\Microsoft.DotNet.PlatformAbstractions.xml" />
+    <Content Include="bin\Debug\Microsoft.EntityFrameworkCore.Abstractions.dll" />
+    <Resource Include="bin\Debug\Microsoft.EntityFrameworkCore.Abstractions.xml" />
+    <Content Include="bin\Debug\Microsoft.EntityFrameworkCore.dll" />
+    <Content Include="bin\Debug\Microsoft.EntityFrameworkCore.Relational.dll" />
+    <Resource Include="bin\Debug\Microsoft.EntityFrameworkCore.Relational.xml" />
+    <Content Include="bin\Debug\Microsoft.EntityFrameworkCore.Sqlite.dll" />
+    <Resource Include="bin\Debug\Microsoft.EntityFrameworkCore.Sqlite.xml" />
+    <Resource Include="bin\Debug\Microsoft.EntityFrameworkCore.xml" />
+    <Content Include="bin\Debug\Microsoft.Extensions.Caching.Abstractions.dll" />
+    <Resource Include="bin\Debug\Microsoft.Extensions.Caching.Abstractions.xml" />
+    <Content Include="bin\Debug\Microsoft.Extensions.Caching.Memory.dll" />
+    <Resource Include="bin\Debug\Microsoft.Extensions.Caching.Memory.xml" />
+    <Content Include="bin\Debug\Microsoft.Extensions.Configuration.Abstractions.dll" />
+    <Resource Include="bin\Debug\Microsoft.Extensions.Configuration.Abstractions.xml" />
+    <Content Include="bin\Debug\Microsoft.Extensions.Configuration.Binder.dll" />
+    <Resource Include="bin\Debug\Microsoft.Extensions.Configuration.Binder.xml" />
+    <Content Include="bin\Debug\Microsoft.Extensions.Configuration.dll" />
+    <Resource Include="bin\Debug\Microsoft.Extensions.Configuration.xml" />
+    <Content Include="bin\Debug\Microsoft.Extensions.DependencyInjection.Abstractions.dll" />
+    <Resource Include="bin\Debug\Microsoft.Extensions.DependencyInjection.Abstractions.xml" />
+    <Content Include="bin\Debug\Microsoft.Extensions.DependencyInjection.dll" />
+    <Resource Include="bin\Debug\Microsoft.Extensions.DependencyInjection.xml" />
+    <Content Include="bin\Debug\Microsoft.Extensions.DependencyModel.dll" />
+    <Resource Include="bin\Debug\Microsoft.Extensions.DependencyModel.xml" />
+    <Content Include="bin\Debug\Microsoft.Extensions.Logging.Abstractions.dll" />
+    <Resource Include="bin\Debug\Microsoft.Extensions.Logging.Abstractions.xml" />
+    <Content Include="bin\Debug\Microsoft.Extensions.Logging.dll" />
+    <Resource Include="bin\Debug\Microsoft.Extensions.Logging.xml" />
+    <Content Include="bin\Debug\Microsoft.Extensions.Options.dll" />
+    <Resource Include="bin\Debug\Microsoft.Extensions.Options.xml" />
+    <Content Include="bin\Debug\Microsoft.Extensions.Primitives.dll" />
+    <Resource Include="bin\Debug\Microsoft.Extensions.Primitives.xml" />
+    <Content Include="bin\Debug\Newtonsoft.Json.dll" />
+    <Resource Include="bin\Debug\Newtonsoft.Json.xml" />
+    <Content Include="bin\Debug\runtimes\win-arm\native\e_sqlite3.dll" />
+    <Content Include="bin\Debug\runtimes\win-x64\native\e_sqlite3.dll" />
+    <Content Include="bin\Debug\runtimes\win-x86\native\e_sqlite3.dll" />
+    <Content Include="bin\Debug\SQLitePCLRaw.batteries_v2.dll" />
+    <Content Include="bin\Debug\SQLitePCLRaw.core.dll" />
+    <Content Include="bin\Debug\SQLitePCLRaw.nativelibrary.dll" />
+    <Content Include="bin\Debug\SQLitePCLRaw.provider.dynamic_cdecl.dll" />
+    <Content Include="bin\Debug\System.Buffers.dll" />
+    <Resource Include="bin\Debug\System.Buffers.xml" />
+    <Content Include="bin\Debug\System.Collections.Immutable.dll" />
+    <Resource Include="bin\Debug\System.Collections.Immutable.xml" />
+    <Content Include="bin\Debug\System.ComponentModel.Annotations.dll" />
+    <Content Include="bin\Debug\System.Diagnostics.DiagnosticSource.dll" />
+    <Resource Include="bin\Debug\System.Diagnostics.DiagnosticSource.xml" />
+    <Content Include="bin\Debug\System.Memory.dll" />
+    <Resource Include="bin\Debug\System.Memory.xml" />
+    <Content Include="bin\Debug\System.Numerics.Vectors.dll" />
+    <Resource Include="bin\Debug\System.Numerics.Vectors.xml" />
+    <Content Include="bin\Debug\System.Runtime.CompilerServices.Unsafe.dll" />
+    <Resource Include="bin\Debug\System.Runtime.CompilerServices.Unsafe.xml" />
+    <Content Include="bin\Debug\System.Threading.Tasks.Extensions.dll" />
+    <Resource Include="bin\Debug\System.Threading.Tasks.Extensions.xml" />
+    <Content Include="bin\Debug\x64\SQLite.Interop.dll" />
+    <Content Include="bin\Debug\x86\SQLite.Interop.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Release\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
