@@ -9,7 +9,11 @@
       Title="Page2" Background="White">
 
     <Grid>
-        <StackPanel>
+        <WrapPanel x:Name="moviesGrid" Background="BlanchedAlmond" HorizontalAlignment="Center" Orientation="Horizontal" Margin="100, 50, 100, 50">
+            
+        </WrapPanel>
+        
+        <StackPanel Visibility="Hidden">
             <Border HorizontalAlignment="Stretch" Margin="300, 20, 300, 0" Height="400" BorderBrush="#FF97999C" BorderThickness="2.5" CornerRadius="5">
                 <Label Content="EKRAN FILMOWY" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="32" FontFamily="/Fonts/#Montserrat Bold"/>
             </Border>

@@ -22,32 +22,6 @@ namespace KinoProjekt.Pages
     /// </summary>
     /// 
 
-    public class UpcomingMovie
-    {
-        public int Id { get; set; }
-        public string Tytul { get; set; }
-        public string DataPremiery { get; set; }
-    }
-
-    public class SqliteDbContext : DbContext
-    {
-        public DbSet<UpcomingMovie> UpcomingMovies { get; set; }
-
-        public string DbPath { get; }
-
-        public SqliteDbContext()
-        {
-            var folder = AppDomain.CurrentDomain.BaseDirectory;
-            DbPath = System.IO.Path.Combine(folder, "KinoProjekt.db");
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseSqlite($"Data Source={DbPath}");
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-            => modelBuilder.Entity<UpcomingMovie>().ToTable("Nadchodzace_filmy");
-    }
-
     public partial class Page4 : Page
     {
         public Page4()

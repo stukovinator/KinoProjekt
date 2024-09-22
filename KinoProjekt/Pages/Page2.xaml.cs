@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,38 +22,94 @@ namespace KinoProjekt.Pages
     /// </summary>
     public partial class Page2 : Page
     {
-        //public List<Film> films = new List<Film>();
-        public Page2()
+        public Page2(Window1 window)
         {
             InitializeComponent();
-            generateSeats();
-            //films.Add(new Film(new BitmapImage(new Uri("../plakat.jpg", UriKind.RelativeOrAbsolute)), "Jaws"));
-
-            //Image image = new Image
-            //{
-            //    Source = films[0].poster
-            //};
-            //Label label = new Label
-            //{
-            //    Content = films[0].title
-            //};
-            //StackPanel stackPanel = new StackPanel
-            //{
-            //    Orientation = Orientation.Horizontal
-            //};
-
-            //stackPanel.Children.Add(image);
-            //stackPanel.Children.Add(label);
-
-            //filmy.Children.Add(stackPanel);
+            //generateSeats();
+            loadMovies();
         }
 
-        public void generateSeats()
+        public class MovieWithScreening
+        {
+            public Movie Movie { get; set; }
+            public int SeansId { get; set; }
+        }
+
+        public List<MovieWithScreening> GetMoviesFromScreenings()
+        {
+            using (var db = new SqliteDbContext())
+            {
+                var screenings = db.Screenings.Include(s => s.Movie).ToList();
+
+                return screenings.Select(s => new MovieWithScreening
+                {
+                    Movie = s.Movie,
+                    SeansId = s.Id
+                }).ToList();
+            }
+        }
+
+        private void loadMovies()
+        {
+            Console.WriteLine("Start");
+            var moviesWithScreenings = GetMoviesFromScreenings();
+
+            foreach (var item in moviesWithScreenings)
+            {
+                var movie = item.Movie;
+                var seansId = item.SeansId;
+
+                var movieButton = new Button()
+                {
+                    Height = 300,
+                    Width = 210,
+                    Margin = new Thickness(5),
+                    BorderThickness = new Thickness(0),
+                    Background = Brushes.Transparent
+                };
+
+                if (movie.Plakat != null)
+                {
+                    try
+                    {
+                        using (var stream = new MemoryStream(movie.Plakat))
+                        {
+                            var image = new Image();
+                            var bitmap = new BitmapImage();
+                            bitmap.BeginInit();
+                            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                            bitmap.StreamSource = stream;
+                            bitmap.EndInit();
+                            image.Source = bitmap;
+                            image.Stretch = Stretch.UniformToFill;
+
+                            movieButton.Content = image;
+                            movieButton.ToolTip = $"SEANS ID: {seansId}";
+
+                            Console.WriteLine($"Dodano film: {movie.Tytul}");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Błąd ładowania obrazu: {ex.Message}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"Film {movie.Tytul} nie ma plakatu.");
+                }
+
+                moviesGrid.Children.Add(movieButton);
+            }
+        }
+
+
+        private void generateSeats()
         {
             var bc = new BrushConverter();
             var index = 1;
 
-            for(int i = 0; i<5; i++)
+            for (int i = 0; i < 5; i++)
             {
                 StackPanel sp = new StackPanel()
                 {
@@ -120,11 +178,9 @@ namespace KinoProjekt.Pages
                     }
                     main.Children.Add(sp);
                 }
-
-                
             }
         }
-    }
 
-    
+
+    }
 }

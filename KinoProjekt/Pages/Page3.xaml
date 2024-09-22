@@ -5,15 +5,21 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:KinoProjekt.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="800" d:DesignWidth="1600"
       Title="Page3" Background="White">
 
     <Grid>
-        <Label Name="tekst" Content="strona 3"/>
-        <Image x:Name="plakat" HorizontalAlignment="Center" VerticalAlignment="Top" Width="120" Height="200"/>
+        <StackPanel x:Name="page3UserView" Visibility="Visible">
+            <Label Name="tekst" Content="strona 3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0, 100, 0, 0" FontSize="28"/>
+        </StackPanel>
 
-        <Button x:Name="wybierzOkladke" Click="wybierzOkladke_Click" Content="wybierz okladke" Width="100" Height="30"/>
-        <TextBox x:Name="tytul" Height="30" Width="150" Margin="0, 100, 0, 0" Background="LightGray"/>
-        <Button x:Name="dodajFilm" Click="dodajFilm_Click" Content="dodaj film" Width="100" Height="30" Margin="0, 200, 0, 0"/>
+        <StackPanel x:Name="page3AdminView" Visibility="Collapsed">
+            <Image x:Name="plakat" HorizontalAlignment="Center" VerticalAlignment="Top" Width="120" Height="200"/>
+
+            <Button x:Name="wybierzOkladke" Click="wybierzOkladke_Click" Content="wybierz okladke" Width="100" Height="30"/>
+            <TextBox x:Name="tytul" Height="30" Width="150" Margin="0, 100, 0, 0" Background="LightGray"/>
+            <Button x:Name="dodajFilm" Click="dodajFilm_Click" Content="dodaj film" Width="100" Height="30" Margin="0, 200, 0, 0"/>
+        </StackPanel>
+        
     </Grid>
 </Page>

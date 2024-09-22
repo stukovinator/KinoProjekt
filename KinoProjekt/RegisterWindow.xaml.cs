@@ -12,38 +12,30 @@ namespace KinoProjekt
     /// </summary>
     /// 
 
-    public class User
-    {
-        public int Id { get; set; }
-        public string Login { get; set; }
-        public string Haslo { get; set; }
-        public string Email { get; set; }
-    }
+    //public partial class SqliteDbContext : DbContext
+    //{
+    //    public DbSet<User> Users { get; set; }
 
-    public class SqliteDbContext : DbContext
-    {
-        public DbSet<User> Users { get; set; }
+    //    public string DbPath { get; }
 
-        public string DbPath { get; }
+    //    public SqliteDbContext()
+    //    {
+    //        var folder = AppDomain.CurrentDomain.BaseDirectory;
 
-        public SqliteDbContext()
-        {
-            var folder = AppDomain.CurrentDomain.BaseDirectory;
+    //        DbPath = System.IO.Path.Combine(folder, "KinoProjekt.db");
+    //    }
 
-            DbPath = System.IO.Path.Combine(folder, "KinoProjekt.db");
-        }
+    //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //        => optionsBuilder.UseSqlite($"Data Source={DbPath}");
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseSqlite($"Data Source={DbPath}");
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<User>().ToTable("Uzytkownicy");
-            modelBuilder.Entity<User>()
-                .HasIndex(u => u.Id)
-                .IsUnique();
-        }
-    }
+    //    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    //    {
+    //        modelBuilder.Entity<User>().ToTable("Uzytkownicy");
+    //        modelBuilder.Entity<User>()
+    //            .HasIndex(u => u.Id)
+    //            .IsUnique();
+    //    }
+    //}
 
     public partial class RegisterWindow : Window
     {
@@ -135,13 +127,17 @@ namespace KinoProjekt
                     db.Users.Add(newUser);
                     db.SaveChanges();
 
-                    Window1 window1 = new Window1();
+                    LoginWindow loginWindow = new LoginWindow();
                     this.Visibility = Visibility.Hidden;
-                    window1.Show();
+                    loginWindow.Show();
                 }
                 catch(Exception ex)
                 {
                     MessageBox.Show("Błąd dodawania użytkownika: " + ex.Message);
+                }
+                finally
+                {
+                    db.Dispose();
                 }
             }
         }
