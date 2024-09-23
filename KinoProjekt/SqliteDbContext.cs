@@ -14,6 +14,7 @@ namespace KinoProjekt
         public DbSet<UpcomingMovie> UpcomingMovies { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Screening> Screenings { get; set; }
+        public DbSet<Reservation> Reservations { get; set; }
 
         public string DbPath { get; }
 
@@ -49,8 +50,27 @@ namespace KinoProjekt
             modelBuilder.Entity<Screening>().ToTable("Seanse");
             modelBuilder.Entity<Screening>()
                 .HasOne(s => s.Movie)
-                .WithMany(m => m.Screenings) // Zakładam, że chcesz mieć dostęp do seansów z poziomu filmu
+                .WithMany(m => m.Screenings)
                 .HasForeignKey(s => s.FilmID);
+
+
+            // MAPOWANIE TABELI REZERWACJE
+            modelBuilder.Entity<Reservation>().ToTable("Rezerwacje");
+            modelBuilder.Entity<Reservation>()
+                .HasOne(r => r.User)
+                .WithMany(u => u.Reservations)
+                .HasForeignKey(r => r.UzytkownikId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Reservation>()
+                .HasOne(r => r.Screening)
+                .WithMany(s => s.Reservations)
+                .HasForeignKey(r => r.SeansId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Reservation>()
+                .HasIndex(r => new { r.UzytkownikId, r.SeansId, r.NrSiedzenia })
+                .IsUnique();
         }
     }
 }

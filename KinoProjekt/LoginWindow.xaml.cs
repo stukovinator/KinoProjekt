@@ -42,7 +42,7 @@ namespace KinoProjekt
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(loginWPassword.Text))
+            if (string.IsNullOrWhiteSpace(loginWPassword.Password))
             {
                 ShowError("HASŁO JEST PUSTE");
                 return false;
@@ -64,7 +64,7 @@ namespace KinoProjekt
                 {
                     var existingUser = db.Users.FirstOrDefault(user => user.Login == loginWLogin.Text);
 
-                    if (existingUser == null || existingUser.Haslo != loginWPassword.Text)
+                    if (existingUser == null || existingUser.Haslo != loginWPassword.Password)
                     {
                         ShowError("NIEPRAWIDŁOWY LOGIN LUB HASŁO");
                         return;

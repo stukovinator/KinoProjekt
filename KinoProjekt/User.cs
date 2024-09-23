@@ -12,5 +12,7 @@ namespace KinoProjekt
         public string Login { get; set; }
         public string Haslo { get; set; }
         public string Email { get; set; }
+
+        public ICollection<Reservation> Reservations { get; set; }
     }
 }

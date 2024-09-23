@@ -22,10 +22,14 @@ namespace KinoProjekt.Pages
     /// </summary>
     public partial class Page2 : Page
     {
+        public int _loggedInUserId;
+        private int currentScreeningId;
+        private int selectedSeatNumber = -1;
+
         public Page2(Window1 window)
         {
             InitializeComponent();
-            //generateSeats();
+            _loggedInUserId = window.getLoggedInUserId();
             loadMovies();
         }
 
@@ -49,9 +53,19 @@ namespace KinoProjekt.Pages
             }
         }
 
+        public List<int> GetReservedSeatsForScreening(int screeningId)
+        {
+            using (var db = new SqliteDbContext())
+            {
+                return db.Reservations
+                         .Where(r => r.SeansId == screeningId)
+                         .Select(r => r.NrSiedzenia)
+                         .ToList();
+            }
+        }
+
         private void loadMovies()
         {
-            Console.WriteLine("Start");
             var moviesWithScreenings = GetMoviesFromScreenings();
 
             foreach (var item in moviesWithScreenings)
@@ -84,9 +98,9 @@ namespace KinoProjekt.Pages
                             image.Stretch = Stretch.UniformToFill;
 
                             movieButton.Content = image;
-                            movieButton.ToolTip = $"SEANS ID: {seansId}";
-
-                            Console.WriteLine($"Dodano film: {movie.Tytul}");
+                            movieButton.Tag = seansId.ToString();
+                            movieButton.ToolTip = movie.Tytul.ToUpper();
+                            movieButton.Click += screeningPoster_Click;
                         }
                     }
                     catch (Exception ex)
@@ -103,13 +117,59 @@ namespace KinoProjekt.Pages
             }
         }
 
+        private void screeningPoster_Click(object sender, RoutedEventArgs e)
+        {
+            var button = (Button)sender;
+            var screeningId = Convert.ToInt32(button.Tag);
+
+            showScreening(screeningId);
+        }
+
+        private string getMovieTitleByScreeningId(int screeningId)
+        {
+            using (var db = new SqliteDbContext())
+            {
+                var screening = db.Screenings.Include(s => s.Movie)
+                                              .FirstOrDefault(s => s.Id == screeningId);
+                return screening?.Movie?.Tytul ?? "NIEZNANY FILM";
+            }
+        }
+
+        private void showScreening(int screeningId)
+        {
+            currentScreeningId = screeningId;
+            moviesGrid.Visibility = Visibility.Collapsed;
+            screenPanel.Visibility = Visibility.Visible;
+            main.Visibility = Visibility.Visible;
+            if (_loggedInUserId == 1)
+            {
+                page2ReservationPanel.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                page2ReservationPanel.Visibility = Visibility.Visible;
+            }
+            screenPanelText.Content += getMovieTitleByScreeningId(screeningId).ToUpper();
+            generateSeats();
+        }
+
+        private void selectSeat(int seatNumber)
+        {
+            selectedSeatNumber = seatNumber;
+            page2ChosenSeat.Content = $"WYBRANO MIEJSCE: {seatNumber}";
+            page2Reserve.IsEnabled = true;
+            page2Reserve.Background = (Brush)new BrushConverter().ConvertFrom("#0466C8");
+        }
 
         private void generateSeats()
         {
+            main.Children.Clear();
             var bc = new BrushConverter();
             var index = 1;
 
-            for (int i = 0; i < 5; i++)
+            var reservedSeats = GetReservedSeatsForScreening(currentScreeningId);
+
+            for (int i = 0; i < 4; i++)
             {
                 StackPanel sp = new StackPanel()
                 {
@@ -117,69 +177,106 @@ namespace KinoProjekt.Pages
                     HorizontalAlignment = HorizontalAlignment.Center
                 };
 
-                if (i % 2 != 0)
+                for (int j = 0; j < (i % 2 == 0 ? 14 : 15); j++)
                 {
-                    for (int j = 0; j < 20; j++)
+                    int seatIndex = index;
+
+                    Border border = new Border()
                     {
-                        Border border = new Border()
-                        {
-                            BorderBrush = (Brush)bc.ConvertFrom("#0466C8"),
-                            BorderThickness = new Thickness(3),
-                            Height = 60,
-                            Width = 65,
-                            CornerRadius = new CornerRadius(2, 2, 15, 15),
-                            Margin = new Thickness(5),
-                            HorizontalAlignment = HorizontalAlignment.Center
-                        };
+                        BorderBrush = (Brush)bc.ConvertFrom("#0466C8"),
+                        BorderThickness = new Thickness(3),
+                        Height = 60,
+                        Width = 65,
+                        CornerRadius = new CornerRadius(2, 2, 15, 15),
+                        Margin = new Thickness(5),
+                        HorizontalAlignment = HorizontalAlignment.Center
+                    };
 
-                        Label label = new Label()
-                        {
-                            Content = index,
-                            HorizontalAlignment = HorizontalAlignment.Center,
-                            VerticalAlignment = VerticalAlignment.Center,
-                            FontFamily = new FontFamily("/Fonts/#Montserrat Bold"),
-                            FontSize = 18
-                        };
+                    Label label = new Label()
+                    {
+                        Content = seatIndex,
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        FontWeight = FontWeights.Bold,
+                        Foreground = (Brush)bc.ConvertFrom("#0466C8"),
+                        FontSize = 18
+                    };
 
-                        border.Child = label;
-                        sp.Children.Add(border);
-                        index++;
+                    if (reservedSeats.Contains(seatIndex))
+                    {
+                        border.BorderBrush = (Brush)bc.ConvertFrom("#dc3545");
+                        label.Foreground = (Brush)bc.ConvertFrom("#dc3545");
+                        border.IsEnabled = false;
                     }
-                    main.Children.Add(sp);
+                    else
+                    {
+                        border.Background = Brushes.White;
+                        border.MouseLeftButtonDown += (sender, e) => selectSeat(seatIndex);
+                    }
+
+                    border.Child = label;
+                    sp.Children.Add(border);
+                    index++;
+                }
+
+                main.Children.Add(sp);
+            }
+        }
+
+        private void reserveSeat(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (selectedSeatNumber == -1)
+            {
+                MessageBox.Show("Nie wybrano miejsca!");
+                return;
+            }
+
+            try
+            {
+                using (var db = new SqliteDbContext())
+                {
+                    var existingReservation = db.Reservations
+                        .Any(r => r.UzytkownikId == _loggedInUserId && r.SeansId == currentScreeningId);
+
+                    if (existingReservation)
+                    {
+                        MessageBox.Show("Już zarezerwowałeś miejsce na ten seans.");
+                        return;
+                    }
+
+                    var newReservation = new Reservation
+                    {
+                        UzytkownikId = _loggedInUserId,
+                        SeansId = currentScreeningId,
+                        NrSiedzenia = selectedSeatNumber
+                    };
+
+                    db.Reservations.Add(newReservation);
+                    db.SaveChanges();
+                }
+
+                MessageBox.Show("Rezerwacja zakończona sukcesem!");
+            }
+            catch (DbUpdateException ex)
+            {
+                if (ex.InnerException?.Message.Contains("UNIQUE constraint failed") == true)
+                {
+                    MessageBox.Show("To miejsce na tym seansie zostało już zarezerwowane.");
                 }
                 else
                 {
-                    for (int j = 0; j < 19; j++)
-                    {
-                        Border border = new Border()
-                        {
-                            BorderBrush = (Brush)bc.ConvertFrom("#0466C8"),
-                            BorderThickness = new Thickness(3),
-                            Height = 60,
-                            Width = 65,
-                            CornerRadius = new CornerRadius(2, 2, 15, 15),
-                            Margin = new Thickness(5),
-                            HorizontalAlignment = HorizontalAlignment.Center
-
-                        };
-
-                        Label label = new Label()
-                        {
-                            Content = index,
-                            HorizontalAlignment = HorizontalAlignment.Center,
-                            VerticalAlignment = VerticalAlignment.Center,
-                            FontFamily = new FontFamily("/Fonts/#Montserrat Bold"),
-                            FontSize = 18
-                        };
-
-                        border.Child = label;
-                        sp.Children.Add(border);
-                        index++;
-                    }
-                    main.Children.Add(sp);
+                    MessageBox.Show("Wystąpił błąd podczas rezerwacji.");
                 }
             }
+
+
+            MessageBox.Show($"Zarezerwowano miejsce {selectedSeatNumber}");
+            selectedSeatNumber = -1;
+            page2Reserve.IsEnabled = false;
+            page2Reserve.Background = Brushes.Gray;
+            generateSeats();
         }
+
 
 
     }

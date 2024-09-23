@@ -14,5 +14,6 @@ namespace KinoProjekt
         public string Data { get; set; }
 
         public virtual Movie Movie { get; set; } // Relacja do filmu
+        public ICollection<Reservation> Reservations { get; set; }  // Lista rezerwacji dla tego seansu
     }
 }

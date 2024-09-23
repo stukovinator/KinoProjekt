@@ -12,5 +12,8 @@ namespace KinoProjekt
         public int UzytkownikId { get; set; }
         public int SeansId { get; set; }
         public int NrSiedzenia {  get; set; }
+
+        public User User {  get; set; }
+        public Screening Screening { get; set; }
     }
 }
