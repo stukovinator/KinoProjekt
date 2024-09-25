@@ -66,10 +66,10 @@ namespace KinoProjekt
                         page = new KinoProjekt.Pages.Page2(this);
                         break;
                     case "Favourites":
-                        page = new KinoProjekt.Pages.Page3(this, 1);
+                        page = new KinoProjekt.Pages.Page3(this);
                         break;
                     case "AdminPanel":
-                        page = new KinoProjekt.Pages.Page3(this, 2);
+                        page = new KinoProjekt.Pages.Page3(this);
                         break;
                     case "Upcoming":
                         page = new KinoProjekt.Pages.Page4();

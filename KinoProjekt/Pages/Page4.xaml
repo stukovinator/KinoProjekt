@@ -13,7 +13,7 @@
             <Label Content="CINEMA WORLD" Foreground="#0466C8" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="18" FontFamily="/Fonts/#Montserrat Bold"/>
             <Label Content="NADCHODZĄCE PREMIERY" Foreground="#0466C8" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="18" FontFamily="/Fonts/#Montserrat Bold"/>
         </StackPanel>
-        <Border BorderBrush="#0466C8" BorderThickness="2" Margin="0, 15, 0, 0" CornerRadius="5,5,5,5" VerticalAlignment="Stretch">
+        <Border BorderBrush="#0466C8" BorderThickness="2" Margin="0, 15, 0, 0" CornerRadius="5,5,5,5" VerticalAlignment="Stretch" Background="White">
             <ListView x:Name="upcomingMoviesList" HorizontalAlignment="Stretch" Margin="3, 2, 3, 3" BorderThickness="0" VerticalAlignment="Stretch" Background="White">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">

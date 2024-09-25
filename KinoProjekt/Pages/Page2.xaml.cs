@@ -110,7 +110,7 @@ namespace KinoProjekt.Pages
                 }
                 else
                 {
-                    Console.WriteLine($"Film {movie.Tytul} nie ma plakatu.");
+                    Console.WriteLine($"Film {movie.Tytul} nie ma plakatu");
                 }
 
                 moviesGrid.Children.Add(movieButton);
@@ -227,7 +227,7 @@ namespace KinoProjekt.Pages
         {
             if (selectedSeatNumber == -1)
             {
-                MessageBox.Show("Nie wybrano miejsca!");
+                MessageBox.Show("Nie wybrano miejsca");
                 return;
             }
 
@@ -240,7 +240,7 @@ namespace KinoProjekt.Pages
 
                     if (existingReservation)
                     {
-                        MessageBox.Show("Już zarezerwowałeś miejsce na ten seans.");
+                        MessageBox.Show("Już zarezerwowałeś miejsce na ten seans");
                         return;
                     }
 
@@ -254,18 +254,16 @@ namespace KinoProjekt.Pages
                     db.Reservations.Add(newReservation);
                     db.SaveChanges();
                 }
-
-                MessageBox.Show("Rezerwacja zakończona sukcesem!");
             }
             catch (DbUpdateException ex)
             {
                 if (ex.InnerException?.Message.Contains("UNIQUE constraint failed") == true)
                 {
-                    MessageBox.Show("To miejsce na tym seansie zostało już zarezerwowane.");
+                    MessageBox.Show("To miejsce na tym seansie zostało już zarezerwowane");
                 }
                 else
                 {
-                    MessageBox.Show("Wystąpił błąd podczas rezerwacji.");
+                    MessageBox.Show("Wystąpił błąd podczas rezerwacji");
                 }
             }
 
