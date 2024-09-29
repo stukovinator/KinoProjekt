@@ -1,4 +1,4 @@
-﻿using KinoProjekt.Pages;
+﻿    using KinoProjekt.Pages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +29,6 @@ namespace KinoProjekt
             adminSettings();
             navframe.Navigate(Home.NavLink);
             Home.IsSelected = true;
-            
         }
 
         private void adminSettings()
@@ -38,6 +37,7 @@ namespace KinoProjekt
             {
                 Favourites.Visibility = Visibility.Collapsed;
                 AdminPanel.Visibility = Visibility.Visible;
+                
             }
             else
             {
@@ -87,5 +87,12 @@ namespace KinoProjekt
         {
             return this.loggedInUserId;
         }
+
+        private void NavFrame_Loaded(object sender, RoutedEventArgs e)
+        {
+            double frameWidth = navframe.ActualWidth;
+            Console.WriteLine($"Szerokość navframe: {frameWidth}");
+        }
+
     }
 }

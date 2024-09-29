@@ -29,6 +29,9 @@ namespace KinoProjekt.Pages
         public Page2(Window1 window)
         {
             InitializeComponent();
+            ImageBrush imageBrush = new ImageBrush();
+            imageBrush.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Pages/bg.png"));
+            this.Background = imageBrush;
             _loggedInUserId = window.getLoggedInUserId();
             loadMovies();
         }
@@ -274,8 +277,5 @@ namespace KinoProjekt.Pages
             page2Reserve.Background = Brushes.Gray;
             generateSeats();
         }
-
-
-
     }
 }

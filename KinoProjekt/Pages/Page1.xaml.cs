@@ -5,6 +5,8 @@ using System;
 using System.Linq;
 using System.Windows.Media;
 using System.Windows.Input;
+using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
 
 namespace KinoProjekt.Pages
 {
@@ -21,6 +23,9 @@ namespace KinoProjekt.Pages
         public Page1(Window1 window)
         {
             InitializeComponent();
+            ImageBrush imageBrush = new ImageBrush();
+            imageBrush.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Pages/bg.png"));
+            this.Background = imageBrush;
             _loggedInUserId = window.getLoggedInUserId();
             loadUserData();
         }
@@ -52,7 +57,6 @@ namespace KinoProjekt.Pages
                     }
                 }catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
                     Console.WriteLine(ex.Message);
                 }
             }

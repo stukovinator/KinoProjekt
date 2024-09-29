@@ -12,31 +12,6 @@ namespace KinoProjekt
     /// </summary>
     /// 
 
-    //public partial class SqliteDbContext : DbContext
-    //{
-    //    public DbSet<User> Users { get; set; }
-
-    //    public string DbPath { get; }
-
-    //    public SqliteDbContext()
-    //    {
-    //        var folder = AppDomain.CurrentDomain.BaseDirectory;
-
-    //        DbPath = System.IO.Path.Combine(folder, "KinoProjekt.db");
-    //    }
-
-    //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //        => optionsBuilder.UseSqlite($"Data Source={DbPath}");
-
-    //    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    //    {
-    //        modelBuilder.Entity<User>().ToTable("Uzytkownicy");
-    //        modelBuilder.Entity<User>()
-    //            .HasIndex(u => u.Id)
-    //            .IsUnique();
-    //    }
-    //}
-
     public partial class RegisterWindow : Window
     {
         public RegisterWindow()
@@ -107,7 +82,6 @@ namespace KinoProjekt
 
             using (var db = new SqliteDbContext())
             {
-                MessageBox.Show($"Ścieżka bazy danych: {db.DbPath}");
                 try
                 {
                     var existingUser = db.Users.FirstOrDefault(user => user.Login == registerWLogin.Text);
@@ -133,7 +107,7 @@ namespace KinoProjekt
                 }
                 catch(Exception ex)
                 {
-                    MessageBox.Show("Błąd dodawania użytkownika: " + ex.Message);
+                    Console.WriteLine("Błąd dodawania użytkownika: " + ex.Message);
                 }
                 finally
                 {

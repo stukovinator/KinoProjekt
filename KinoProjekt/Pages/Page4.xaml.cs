@@ -27,6 +27,9 @@ namespace KinoProjekt.Pages
         public Page4()
         {
             InitializeComponent();
+            ImageBrush imageBrush = new ImageBrush();
+            imageBrush.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Pages/bg.png"));
+            this.Background = imageBrush;
             readFilmsFromDb();
         }
 

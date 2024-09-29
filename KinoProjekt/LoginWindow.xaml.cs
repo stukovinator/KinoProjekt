@@ -78,11 +78,11 @@ namespace KinoProjekt
                 }
                 catch (DbUpdateException dbEx)
                 {
-                    MessageBox.Show("Błąd podczas aktualizacji bazy danych: " + dbEx.InnerException?.Message);
+                    Console.WriteLine("Błąd podczas aktualizacji bazy danych: " + dbEx.InnerException?.Message);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Błąd logowania: " + ex.Message);
+                    Console.WriteLine("Błąd logowania: " + ex.Message);
                 }
                 finally
                 {

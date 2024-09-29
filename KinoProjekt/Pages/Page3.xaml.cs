@@ -15,6 +15,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 using Path = System.Windows.Shapes.Path;
+using System.Windows.Media.Animation;
+using Microsoft.EntityFrameworkCore;
 
 namespace KinoProjekt.Pages
 {
@@ -27,10 +29,14 @@ namespace KinoProjekt.Pages
     {
         public byte[] PlakatBytes;
         private int _loggedInUserId;
-        //private List<Border> borders;
+        private StackPanel AdminPosterSPStarting;
+        private StackPanel AdminScreeningSPStarting;
         public Page3(Window1 window)
         {
             InitializeComponent();
+            ImageBrush imageBrush = new ImageBrush();
+            imageBrush.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Pages/bg.png"));
+            this.Background = imageBrush;
             _loggedInUserId = window.getLoggedInUserId();
             generateView(_loggedInUserId);
         }
@@ -47,12 +53,16 @@ namespace KinoProjekt.Pages
             {
                 page3UserView.Visibility = Visibility.Collapsed;
                 page3AdminView.Visibility = Visibility.Visible;
+                AdminPosterSPStarting = page3AdminMoviePosterStart;
+                AdminScreeningSPStarting = page3AdminScreeningPosterStart;
+                loadMovies();
             }
         }
 
         private void loadUserReservations(int userId)
         {
-            using (var db = new SqliteDbContext()){
+            using (var db = new SqliteDbContext())
+            {
                 var reservations = db.Reservations
                     .Where(r => r.UzytkownikId == userId)
                     .Join(db.Screenings, r => r.SeansId, s => s.Id, (r, s) => new { r, s.FilmID, s.Data, r.NrSiedzenia })
@@ -62,9 +72,19 @@ namespace KinoProjekt.Pages
                 foreach (var reservation in reservations)
                 {
                     var border = createReservation(reservation.Tytul, reservation.NrSiedzenia, reservation.Data, reservation.r.Id);
-                    //borders.Add(border);
                     page3UserViewReservations.Children.Add(border);
                 }
+            }
+        }
+
+        private void loadMovies()
+        {
+            using (var db = new SqliteDbContext())
+            {
+                var movies = db.Movies.ToList();
+                page3AdminComboBox.ItemsSource = movies;
+                page3AdminComboBox.DisplayMemberPath = "Tytul";
+                page3AdminComboBox.SelectedValuePath = "Id";
             }
         }
 
@@ -105,7 +125,7 @@ namespace KinoProjekt.Pages
             var titleLabel = new Label
             {
                 Content = movieTitle.ToUpper() + " - " + date,
-                Margin = new Thickness(5, 0, 0 , 0),
+                Margin = new Thickness(5, 0, 0, 0),
                 Foreground = (Brush)new BrushConverter().ConvertFrom("#0466C8"),
                 VerticalContentAlignment = VerticalAlignment.Center,
                 FontSize = 24,
@@ -194,7 +214,20 @@ namespace KinoProjekt.Pages
             return File.ReadAllBytes(imagePath);
         }
 
-        private void wybierzOkladke_Click(object sender, RoutedEventArgs e)
+        private void updateAddButton(Border button)
+        {
+            if (button.IsEnabled)
+            {
+                var bc = new BrushConverter();
+                button.Background = (Brush)bc.ConvertFrom("#0466C8");
+            }
+            else
+            {
+                button.Background = (Brush)new BrushConverter().ConvertFrom("#FF97999C");
+            }
+        }
+
+        private void page3AdminMoviePoster_Click(object sender, MouseButtonEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Title = "Wybierz plakat";
@@ -204,17 +237,32 @@ namespace KinoProjekt.Pages
             if (openFileDialog.ShowDialog() == true)
             {
                 var bitmapImage = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.RelativeOrAbsolute));
-                plakat.Source = bitmapImage;
+                page3AdminMoviePoster.Child = null;
+                var newPoster = new Image
+                {
+                    Source = bitmapImage,
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    VerticalAlignment = VerticalAlignment.Stretch,
+                    Stretch = Stretch.Fill
+                };
+                page3AdminMoviePoster.Child = newPoster;
 
                 PlakatBytes = convertImageToBytes(openFileDialog.FileName);
+
+                page3AdminMovieTitle.IsEnabled = true;
+                page3AdminMovieDescription.IsEnabled = true;
+                page3AdminAddMovie.IsEnabled = true;
+                updateAddButton(page3AdminAddMovie);
             }
         }
 
-        private void dodajFilm_Click(object sender, RoutedEventArgs e)
+        private void page3AdminAddMovie_Click(object sender, MouseButtonEventArgs e)
         {
-            if (PlakatBytes == null)
+            if (PlakatBytes == null) return;
+
+            if (string.IsNullOrWhiteSpace(page3AdminMovieTitle.Text) || string.IsNullOrWhiteSpace(page3AdminMovieDescription.Text))
             {
-                MessageBox.Show("Wybierz plakat przed dodaniem filmu");
+                MessageBox.Show("Pola nie mogą być puste");
                 return;
             }
 
@@ -222,7 +270,8 @@ namespace KinoProjekt.Pages
             {
                 try
                 {
-                    var existingMovie = db.Movies.FirstOrDefault(m => m.Tytul == tytul.Text);
+                    var existingMovie = db.Movies.FirstOrDefault(m => m.Tytul == page3AdminMovieTitle.Text);
+
                     if (existingMovie != null)
                     {
                         MessageBox.Show("Film o tym tytule już istnieje");
@@ -231,10 +280,10 @@ namespace KinoProjekt.Pages
 
                     var newMovie = new Movie()
                     {
-                        Tytul = tytul.Text,
+                        Tytul = page3AdminMovieTitle.Text,
                         Ocena = 1.0,
                         IloscGlosow = 0,
-                        Opis = "Nowy film!",
+                        Opis = page3AdminMovieDescription.Text,
                         Plakat = PlakatBytes
                     };
 
@@ -243,21 +292,163 @@ namespace KinoProjekt.Pages
 
                     MessageBox.Show("Film dodany pomyślnie");
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     MessageBox.Show("Błąd dodawania filmu: " + ex.Message);
                     Console.WriteLine(ex.Message);
                     if (ex.InnerException != null)
-                    {   
+                    {
                         Console.WriteLine(ex.InnerException.Message);
                     }
                 }
                 finally
                 {
-                    tytul.Text = "";
-                    plakat.Source = null;
+                    page3AdminMovieTitle.Text = "";
+                    page3AdminMovieDescription.Text = "";
+                    page3AdminMovieTitle.IsEnabled = false;
+                    page3AdminMovieDescription.IsEnabled = false;
+                    page3AdminAddMovie.IsEnabled = false;
+                    updateAddButton(page3AdminAddMovie);
+                    page3AdminMoviePoster.Child = AdminPosterSPStarting;
                     PlakatBytes = null;
                     db.Dispose();
+                }
+            }
+        }
+
+        private void page3NewScreeningTab_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (Canvas.GetLeft(page3AdminTabRectangle) == 248) return;
+
+            DoubleAnimation moveAnimation = new DoubleAnimation();
+            moveAnimation.From = 95;
+            moveAnimation.To = 248;
+            moveAnimation.Duration = TimeSpan.FromMilliseconds(100);
+            DoubleAnimation sizeAnimation = new DoubleAnimation();
+            sizeAnimation.From = 109;
+            sizeAnimation.To = 118;
+            sizeAnimation.Duration = TimeSpan.FromMilliseconds(100);
+
+            page3AdminTabRectangle.BeginAnimation(Canvas.LeftProperty, moveAnimation);
+            page3AdminTabRectangle.BeginAnimation(Rectangle.WidthProperty, sizeAnimation);
+            page3NewScreeningTab.Foreground = (Brush)new BrushConverter().ConvertFrom("#0466C8");
+            page3NewMovieTab.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF97999C");
+            page3AdminNewMovie.Visibility = Visibility.Collapsed;
+            page3AdminNewScreening.Visibility = Visibility.Visible;
+        }
+
+        private void page3NewMovieTab_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (Canvas.GetLeft(page3AdminTabRectangle) == 95) return;
+
+            DoubleAnimation moveAnimation = new DoubleAnimation();
+            moveAnimation.From = 248;
+            moveAnimation.To = 95;
+            moveAnimation.Duration = TimeSpan.FromMilliseconds(100);
+            DoubleAnimation sizeAnimation = new DoubleAnimation();
+            sizeAnimation.From = 118;
+            sizeAnimation.To = 109;
+            sizeAnimation.Duration = TimeSpan.FromMilliseconds(100);
+
+            page3AdminTabRectangle.BeginAnimation(Canvas.LeftProperty, moveAnimation);
+            page3AdminTabRectangle.BeginAnimation(Rectangle.WidthProperty, sizeAnimation);
+            page3NewMovieTab.Foreground = (Brush)new BrushConverter().ConvertFrom("#0466C8");
+            page3NewScreeningTab.Foreground = (Brush)new BrushConverter().ConvertFrom("#FF97999C");
+            page3AdminNewMovie.Visibility = Visibility.Visible;
+            page3AdminNewScreening.Visibility = Visibility.Collapsed;
+        }
+
+        private void page3AdminComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (page3AdminComboBox.SelectedItem != null)
+            {
+                var selectedMovie = (Movie)page3AdminComboBox.SelectedItem;
+
+                page3AdminScreeningPoster.Child = null;
+
+                if (selectedMovie.Plakat != null && selectedMovie.Plakat.Length > 0)
+                {
+                    var bitmap = new BitmapImage();
+                    using (var stream = new MemoryStream(selectedMovie.Plakat))
+                    {
+                        bitmap.BeginInit();
+                        bitmap.StreamSource = stream;
+                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmap.EndInit();
+                    }
+
+                    var moviePoster = new Image
+                    {
+                        Source = bitmap,
+                        HorizontalAlignment = HorizontalAlignment.Stretch,
+                        VerticalAlignment = VerticalAlignment.Stretch,
+                        Stretch = Stretch.Fill
+                    };
+
+                    page3AdminScreeningPoster.Child = moviePoster;
+                }
+
+                page3AdminScreeningDate.IsEnabled = true;
+                page3AdminScreeningHallNumber.IsEnabled = true;
+                page3AdminAddScreening.IsEnabled = true;
+                updateAddButton(page3AdminAddScreening);
+            }
+        }
+
+        private void page3AdminAddScreening_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (!(page3AdminScreeningPoster.Child is Image))
+            {
+                MessageBox.Show("Nie wybrano filmu");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(page3AdminScreeningDate.Text) || string.IsNullOrWhiteSpace(page3AdminScreeningHallNumber.Text))
+            {
+                MessageBox.Show("Pola nie mogą być puste");
+                return;
+            }
+
+            int hallNumber;
+            if (!int.TryParse(page3AdminScreeningHallNumber.Text, out hallNumber))
+            {
+                MessageBox.Show("Numer sali musi być liczbą");
+                return;
+            }
+
+            using (var db = new SqliteDbContext())
+            {
+                try
+                {
+                    var selectedMovie = (Movie)page3AdminComboBox.SelectedItem;
+                    var existingScreening = db.Screenings.Where(s => s.Data == page3AdminScreeningDate.Text && s.Sala == hallNumber).FirstOrDefault();
+
+                    if (existingScreening != null)
+                    {
+                        MessageBox.Show($"Istnieje już seans na sali {hallNumber} w dniu {page3AdminScreeningDate.Text}");
+                        return;
+                    }
+
+                    var newScreening = new Screening
+                    {
+                        FilmID = selectedMovie.Id,
+                        Movie = null,
+                        Data = page3AdminScreeningDate.Text,
+                        Sala = hallNumber
+                    };
+
+                    db.Screenings.Add(newScreening);
+                    db.SaveChanges();
+
+                    MessageBox.Show("Dodano seans");
+                }
+                catch (DbUpdateException ex)
+                {
+                    Console.WriteLine("Błąd podczas aktualizacji bazy danych: " + ex.InnerException?.Message ?? ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
                 }
             }
         }
